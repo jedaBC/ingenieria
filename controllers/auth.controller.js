@@ -26,13 +26,14 @@ exports.signup = (req, res) => {
           }
         }).then(roles => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User was registered successfully!" });
+            console.log("Encontre el problema")
+            return res.status(200).send({ message: "User was registered successfully!" });
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "User was registered successfully!" });
+          return res.status(200).send({ message: "User was registered successfully!" });
         });
       }
     })
@@ -73,7 +74,7 @@ exports.logIn = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
-        res.status(200).send({
+        return res.status(200).send({
           id: user.id,
           name: user.name,
           lastName: user.lastName,
