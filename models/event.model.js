@@ -1,9 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
     const Event = sequelize.define("events", {
-      nombre: {
+      name: {
         type: Sequelize.STRING
       },
-      fecha: {
+      date: {
         type: Sequelize.DATE
       },
       location: {
@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       cant_personas: {
         type: Sequelize.INTEGER
-      }
+      },
     });
   
     return Event;

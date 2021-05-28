@@ -1,6 +1,6 @@
 const db = require("../models");
-const User = db.user;
-const Role = db.role;
+const Event = db.event;
+
 
 const Op = db.Sequelize.Op;
 
@@ -10,14 +10,12 @@ var bcrypt = require("bcryptjs");
 exports.createEvent = (req, res) => {
 
     Event.create({
-        nombre: req.body.nombre,
-        fecha: req.body.fecha,
+        name: req.body.name,
+        date: req.body.date,
         location: req.body.location,
         cant_personas: req.body.cant_personas,
+        user_id: req.body.user_id,
       })
   
 };
 
-exports.logIn = (req, res) => {
-  
-};

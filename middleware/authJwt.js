@@ -4,8 +4,9 @@ const db = require("../models");
 const User = db.user;
 
 verifyToken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
-
+  console.log("SENT TOKEN: " + req.body.token)
+  let token = req.body.token;
+  
   if (!token) {
     return res.status(403).send({
       message: "No token provided!"
@@ -18,8 +19,30 @@ verifyToken = (req, res, next) => {
         message: "Unauthorized!"
       });
     }
-    req.userId = decoded.id;
+    req.user_id = decoded.id;
     next();
+  });
+};
+
+isUser = (req, res, next) => {
+  console.log("BUSCANDO EL USER: " + req.body.user_id)
+  User.findByPk(req.user_id).then(user => {
+    console.log("consegui el user")
+    user.getRoles().then(roles => {
+      console.log("Consegui los roles")
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "user") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Necesitas ser usuario para crear un evento!",
+      });
+      
+      return;
+    });
   });
 };
 
@@ -82,6 +105,7 @@ isModeratorOrAdmin = (req, res, next) => {
 
 const authJwt = {
   verifyToken: verifyToken,
+  isUser: isUser,
   isAdmin: isAdmin,
   isModerator: isModerator,
   isModeratorOrAdmin: isModeratorOrAdmin
