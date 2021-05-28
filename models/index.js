@@ -21,11 +21,13 @@ const sequelize = new Sequelize(
 
 const db = {};
 
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+
+
+console.log("EMpezo sequelize")
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+//db.evento = require("../models/event.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -38,6 +40,9 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
-db.ROLES = ["user", "admin", "moderator"];
+db.ROLES = ["user", "admin", "proveedor"];
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
 
 module.exports = db;

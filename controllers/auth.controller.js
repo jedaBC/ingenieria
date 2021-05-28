@@ -17,18 +17,22 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
+
       if (req.body.roles) {
+        console.log("PORFAVORRRR")
+        console.log(req.body.roles)
         Role.findAll({
           where: {
-            name: {
-              [Op.or]: req.body.roles
-            }
+            name: req.body.roles[0], 
           }
         }).then(roles => {
+          console.log("LO CONSEGUI")
           user.setRoles(roles).then(() => {
             console.log("Encontre el problema")
             return res.status(200).send({ message: "User was registered successfully!" });
           });
+        }).catch((err) => {
+          console.log("No se consiguio el role")
         });
       } else {
         // user role = 1
