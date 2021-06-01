@@ -45,3 +45,18 @@ exports.allAccess = (req, res) => {
     
     return;
   };
+  exports.getUserbyName = (req, res) =>{
+
+    Role.findByPk(1).then(role => {
+      role.getUsers(
+        {where: {
+          name: req.body.name
+        }}
+      ).then(users => {
+        res.status(200).send(users);
+        return;
+      })
+    })
+    
+    return;
+  };
