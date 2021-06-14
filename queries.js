@@ -67,9 +67,10 @@ const getUsers = (request, response) => {
   }
 
   //fernando*************************
-  app.post("/distribuidores", async(req,res) => {
+  //app.post("/distribuidores", async(req,res) => {
+    const insertDistribuidor = (req, res) => {
     try {
-        const { nombre } = req.body;
+        const { nombre } = request.body;
         const newDistribuidor = await pool.query(
             "INSERT INTO distribuidores (nombre) VALUES($1) RETURNING *",
             [nombre]
@@ -81,13 +82,14 @@ const getUsers = (request, response) => {
         console.error(error.message)
     }
 
-})
+}
 
 
 
 //GET ALL
 
-app.get("/distribuidores", async(req,res) => {
+//app.get("/distribuidores", async(req,res) => {
+  const getDistribuidores = (req,res) => {
     try {
         const allDis = await pool.query("SELECT * FROM distribuidores");
         res.json(allDis.rows)
@@ -95,26 +97,25 @@ app.get("/distribuidores", async(req,res) => {
     } catch (error) {
         console.error(error.message)
     }
-
-
-})
+}
 
 
 //GET
-app.get("/distribuidores/:id", async (req,res) => {
-
+//app.get("/distribuidores/:id", async (req,res) => {
+const getDistribuidorById = (req,res) =>{
 try {
-    const {id} = req.params;
+  const id = parseInt(request.params.id)  
     const distribuidor = await pool.query("SELECT * FROM distribuidores WHERE distribuidores_id = $1", [id])
     res.json(distribuidor.rows[0])
 } catch (error) {
     console.error(error.message)
-}})
+}}
 
 
 //UPDATE
 
-app.put("/distribuidores/:id", async (req, res) => {
+//app.put("/distribuidores/:id", async (req, res) => {
+  const updateDistribuidor = (req,res) =>{
     try {
         const {id} = req.params;
         const {nombre} = req.body;
@@ -125,11 +126,12 @@ app.put("/distribuidores/:id", async (req, res) => {
     } catch (error) {
         console.error(error.message)
     }
-})
+}
 
 //DELETE
 
-app.delete("/distribuidores/:id", async (req, res) => {
+//app.delete("/distribuidores/:id", async (req, res) => {
+  const deleteDistribuidor = (req, res) => {
 try {
     const {id} = req.params;
     const deleteDistribuidor = await pool.query("UPDATE distribuidores SET activo = false WHERE distribuidores_id = $1", 
@@ -138,7 +140,7 @@ try {
 } catch (error) {
     console.error(error.message)
 }
-})
+}
 
 ///fernando*******************
 
@@ -149,5 +151,10 @@ try {
   module.exports = {
     getUsers,
     getUserById,
+    getDistribuidores,
+    getDistribuidorById,
+    insertDistribuidor,
+    deleteDistribuidor,
+    updateDistribuidor
   }
   
