@@ -35,6 +35,6 @@ require('./routes/distribuidor.routes')(app);
 const port = process.env.PORT || 5000
 app.listen(port, () => {
     console.log(`Serve at http://localhost:${port}`);
-}).l;
+});
 
 //Luis Probando el git push
